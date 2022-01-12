@@ -1,8 +1,9 @@
 <?php
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('topic',function(){
-//     return Post::all();
-// });
 Route::get('posts','App\Http\Controllers\PostController@index');
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::Post('/login',[AuthController::class,'login']);
+Route::Post('/register',[AuthController::class,'register']);
+Route::get('/index',[UserController::class,'index']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::Post('/logout',[AuthController::class,'logout']);
 });
+ 
