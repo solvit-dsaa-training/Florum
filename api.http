@@ -1,0 +1,8 @@
+post http://localhost:8000/api/questions
+content-type: application/json
+
+{
+  "title": "title_02",
+  "body": "description_02",
+  "user_id": 1
+}

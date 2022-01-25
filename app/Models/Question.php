@@ -34,7 +34,15 @@ class Question extends Model
      * @var array
      */
     protected $fillable = ['title','body','status','user_id'];
-
+    public function poster()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function repliers()
+    {
+        return $this->hasMany(User::class);
+    }
 
 
 }

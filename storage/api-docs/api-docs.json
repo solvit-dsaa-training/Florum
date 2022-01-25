@@ -1,10 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel OpenApi Demo Documentation",
-        "description": "L5 Swagger OpenApi description",
+        "title": "Florum",
+        "description": "Documentation of all api for florum project",
         "contact": {
-            "email": "admin@admin.com"
+            "email": "info@florum.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -14,29 +14,196 @@
     },
     "servers": [
         {
-            "url": "127.0.0.1:8000",
-            "description": "Demo API Server"
+            "url": "/api"
         }
     ],
     "paths": {
         "/questions": {
             "get": {
                 "tags": [
-                    "Questions"
+                    "QuestionsList"
                 ],
                 "summary": "Get list of questions",
                 "description": "Returns list of questions",
                 "operationId": "getQuestionsList",
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "app/Http/Resources/Admin/QuestionResource.php"
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Add Question"
+                ],
+                "summary": "Ask new question",
+                "description": "Returns question registration information",
+                "operationId": "saveQuestion",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Question title",
+                        "required": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "Question Body",
+                        "required": true
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the user who asks the question",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login to the platform",
+                "description": "Use email and password to login",
+                "operationId": "User Login",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Your email",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Your Password",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/questions/{id}": {
+            "get": {
+                "tags": [
+                    "View Question"
+                ],
+                "summary": "Get question details",
+                "description": "Returns question details on a single page",
+                "operationId": "getQuestionDetails",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Update Question"
+                ],
+                "summary": "Update Registered question",
+                "description": "Updating the already registered question",
+                "operationId": "updateQuestion",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question ID",
+                        "required": true
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Question title",
+                        "required": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "Question Body",
+                        "required": true
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the user who asks the question",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "RemoveQuestion"
+                ],
+                "summary": "Delete question",
+                "description": "Delete question using ID",
+                "operationId": "deleteQuestion",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -48,12 +215,27 @@
             }
         }
     },
-    "tags": [
-        {
-            "name": "Questions",
-            "description": "API Endpoints of Questions"
+    "components": {
+        "parameters": {
+            "title": {
+                "name": "title",
+                "in": "path",
+                "description": "parameter",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
         }
-    ],
+    },
     "security": [
         []
     ]

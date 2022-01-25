@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Validator;
    
 class LoginController extends Controller
 {
@@ -38,14 +39,53 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
    
+
+    /**
+     * @OA\Post(
+     *      path="/login",
+     *      operationId="User Login",
+     *      tags={"Login"},
+     *      summary="Login to the platform",
+     *      description="Use email and password to login",
+     *      @OA\Response(
+     *       response=200,
+     *       description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *       @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         description="Your email",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         description="Your Password",
+     *         required=true,
+     *      ),
+     *   ),
+     */
+    
     public function login(Request $request)
     {   
         $input = $request->all();
    
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [ 
             'email' => 'required|email',
             'password' => 'required',
         ]);
+      
+        if ($validator->fails()) {
+          return response()->json($validator->errors(), 422);
+        }
    
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {

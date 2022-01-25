@@ -13,16 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 class QuestionsApiController extends Controller
 {
     /**
+     * parameter
      * @OA\Get(
      *      path="/questions",
      *      operationId="getQuestionsList",
-     *      tags={"Questions"},
+     *      tags={"QuestionsList"},
      *      summary="Get list of questions",
      *      description="Returns list of questions",
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="app/Http/Resources/Admin/QuestionResource.php")
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -33,6 +33,14 @@ class QuestionsApiController extends Controller
      *          description="Forbidden"
      *      )
      *     )
+     *      *   @OA\Parameter(
+     *      name="title",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
      */
     public function index()
     {

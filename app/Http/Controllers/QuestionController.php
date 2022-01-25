@@ -23,7 +23,7 @@ class QuestionController extends Controller
 
         // return view('question.index', compact('questions'))
         //     ->with('i', (request()->input('page', 1) - 1) * $questions->perPage());
-        return $questions;
+        return response()->json(['code'=>200, 'status'=>'Success','data'=>$questions]);
     }
 
     /**
@@ -38,10 +38,43 @@ class QuestionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/questions",
+     *      operationId="saveQuestion",
+     *      tags={"Add Question"},
+     *      summary="Ask new question",
+     *      description="Returns question registration information",
+     *      @OA\Response(
+     *       response=200,
+     *       description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *       @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         description="Question title",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="body",
+     *         in="query",
+     *         description="Question Body",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="user_id",
+     *         in="query",
+     *         description="ID of the user who asks the question",
+     *         required=true,
+     *      ),
+     *   ),
      */
     public function store(Request $request)
     {
@@ -73,11 +106,34 @@ class QuestionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/questions/{id}",
+     *      operationId="getQuestionDetails",
+     *      tags={"View Question"},
+     *      summary="Get question details",
+     *      description="Returns question details on a single page",
+     *      @OA\Response(
+     *       response=200,
+     *       description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *       @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Question ID",
+     *         required=true,
+     *      ),
+     *   ),
      */
+
+     
     public function show($id)
     {
         $question = Question::find($id);
@@ -100,11 +156,49 @@ class QuestionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Question $question
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *      path="/questions/{id}",
+     *      operationId="updateQuestion",
+     *      tags={"Update Question"},
+     *      summary="Update Registered question",
+     *      description="Updating the already registered question",
+     *      @OA\Response(
+     *       response=200,
+     *       description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Question ID",
+     *         required=true,
+     *      ),
+     *       @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         description="Question title",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="body",
+     *         in="query",
+     *         description="Question Body",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="user_id",
+     *         in="query",
+     *         description="ID of the user who asks the question",
+     *         required=true,
+     *      ),
+     *   ),
      */
     public function update(Request $request, Question $question)
     {
@@ -129,10 +223,33 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @OA\Delete(
+     *      path="/questions/{id}",
+     *      operationId="deleteQuestion",
+     *      tags={"RemoveQuestion"},
+     *      summary="Delete question",
+     *      description="Delete question using ID",
+     *      @OA\Response(
+     *       response=200,
+     *       description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *       @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Question ID",
+     *         required=true,
+     *      ),
+     *   ),
      */
+
     public function destroy($id)
     {
         $question = Question::find($id)->delete();
