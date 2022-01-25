@@ -26,13 +26,6 @@ class DeleteQuestionTest extends TestCase
         'user_id' => User::find(1)->id,
     ]);
 
-    // $user = factory(User::class)->create([
-        //     'name' => 'Test',
-        //     'email' => 'test@hotmail.com', 
-        //     // note you need to use the bcrypt function here to hash your password
-        //     'password' => bcrypt('123456')
-        // ]); 
-
     $response = $this->delete('/api/questions/' . $question->id);
 
     $response->assertStatus(200);
